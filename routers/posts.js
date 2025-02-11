@@ -36,14 +36,20 @@ const posts = [
     }
 ];
 
-// Rotta per ottenere la lista dei post in modo generico
+// Rotta per restituire l'intera lista dei post in formato JSON
 router.get('/', function (req, res) {
-    res.send('Lista dei Posts'); // Messaggio di risposta
+    res.json(posts); // Invia l'array di post come JSON
 });
 
-// Rotta per ottenere i dettagli di un singolo post tramite ID
+
+// Rotta per ottenere i dettagli di un singolo post tramite ID (indice dell'array)
 router.get('/:id', function (req, res) {
-    res.send('Dettagli del post n. ' + req.params.id);
+    const postId = parseInt(req.params.id); // Converte il parametro in numero
+    if (postId >= 0 && postId < posts.length) {
+        res.json(posts[postId]); // Restituisce il post corrispondente
+    } else {
+        res.status(404).json({ error: "Post non trovato" }); // Gestione errore se ID non valido
+    }
 });
 
 // Rotta per creare un nuovo post (da implementare con database)
